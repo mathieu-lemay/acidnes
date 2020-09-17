@@ -1,0 +1,10 @@
+http://en.wikibooks.org/wiki/NES_Programming
+http://bobrost.com/nes/
+http://wiki.nesdev.com/w/index.php/Nesdev_Wiki
+http://www.nesicide.com/
+http://tuxnes.sourceforge.net/
+http://www.zophar.net/linux/nes.html
+http://www.zophar.net/documents/nes.html
+https://fms.komkon.org/EMUL8/NES.html
+
+Test Roms: http://wiki.nesdev.com/w/index.php/Emulator_tests
