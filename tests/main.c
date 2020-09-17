@@ -52,12 +52,22 @@ int test_1_nestest() {
 
     cpu->ppu = ppu;
     cpu->PC = 0xc000;
-    cpu->clock = 7; /* TODO: Figure out why it starts at 7 */
+
+    /* TODO: Figure out where the 7 cycles come from */
+    cpu->clock = 7;
+    ppu->line_position = 21;
+
+    uint8_t cycles;
 
     for (;;) {
         dump_cpu(cpu);
 
-        cpu_tick(cpu);
+        cycles = cpu_tick(cpu);
+
+        /* 3 PPU cycles for each CPU cycle */
+        for (int i = 0; i < cycles * 3; i++) {
+            ppu_tick(ppu);
+        }
 
         if (cpu->PC == 0x0001) {
             break;
@@ -89,6 +99,6 @@ void dump_cpu(cpu_t *cpu) {
     flags[7] = p & (uint8_t) C ? 'C' : '-';
     flags[8] = '\0';
 
-    printf("PC:%04X OP:%02X (%s) A:%02X X:%02X Y:%02X P:%02X SP:%02X CYC:%lu\n",
-           cpu->PC, op, OPCODES[op], cpu->A, cpu->X, cpu->Y, cpu->P, cpu->SP, cpu->clock);
+    printf("PC:%04X OP:%02X (%s) A:%02X X:%02X Y:%02X P:%02X SP:%02X PPU:%3d,%3d CYC:%lu\n",
+           cpu->PC, op, OPCODES[op], cpu->A, cpu->X, cpu->Y, cpu->P, cpu->SP, cpu->ppu->scanline, cpu->ppu->line_position, cpu->clock);
 }
