@@ -1,12 +1,23 @@
 #! /bin/bash -eu
 
+builddir="${1:-./build}"
+
 expected="tests/nestest-output.txt"
 actual="tests/nestest.log"
 
-./build/tests > "${actual}" || true
-line=$(cmp "${expected}" "${actual}" | awk '{print $NF}')
-exitcode=0
+set +e
+"${builddir}/tests" > "${actual}"
+exitcode=$?
+set -e
 
+if [ ${exitcode} -ne 0 ]; then
+    rm "${actual}"
+    exit ${exitcode}
+fi
+
+line=$(cmp "${expected}" "${actual}" | awk '{print $NF}')
+
+exitcode=0
 if [ -n "$line" ]; then
     echo "Files differ at line: $line"
     awk -v file="${expected}" -v line=$line 'NR==line-1,NR==line+1 {print "Expected: "$0;}' "${expected}"
