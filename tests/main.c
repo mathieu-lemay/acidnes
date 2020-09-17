@@ -36,26 +36,27 @@ int test_1_nestest() {
     mapper_init(cart->mapper_type, cart->rom, cart->nb_16k_rom_banks * 0x4000, cart->vrom,
                 cart->nb_8k_vrom_banks * 0x2000);
 
-    cpu = cpu_init();
+    ppu = ppu_init(NULL);
+    if (ppu == NULL) {
+        fprintf(stderr, "Unable to initialize PPU\n");
+        return 1;
+    }
+
+    cpu = cpu_init(ppu);
     if (cpu == NULL) {
         fprintf(stderr, "Unable to initialize CPU\n");
         return 1;
     }
 
     cpu_reset(cpu);
-
-    ppu = ppu_init();
-    if (ppu == NULL) {
-        fprintf(stderr, "Unable to initialize PPU\n");
-        return 1;
-    }
+    ppu_reset(ppu);
 
     cpu->ppu = ppu;
     cpu->PC = 0xc000;
 
     /* TODO: Figure out where the 7 cycles come from */
     cpu->clock = 7;
-    ppu->line_position = 21;
+    ppu->line_position = cpu->clock * 3;
 
     uint8_t cycles;
 

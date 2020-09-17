@@ -14,7 +14,7 @@ uint8_t get_addr_page(uint16_t addr);
 /* Debug */
 void dump_state(cpu_t *cpu);
 
-cpu_t *cpu_init(void) {
+cpu_t *cpu_init(ppu_t *ppu) {
     cpu_t *cpu = malloc(sizeof(cpu_t));
 
     if (cpu == NULL) {
@@ -29,6 +29,8 @@ cpu_t *cpu_init(void) {
     cpu->P = 0;
 
     cpu->clock = 0;
+
+    cpu->ppu = ppu;
 
     return cpu;
 }

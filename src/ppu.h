@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#include <SDL.h>
+
 #include "types.h"
 
 #define PPU_VBLANK_SCANLINE 240
@@ -14,17 +16,21 @@ extern "C" {
 #define PPU_LAST_LINE_POS 340
 
 struct ppu_s {
+    uint32_t frame;
     uint16_t scanline;
     uint16_t line_position;
-    bool is_vblank;
 
+    bool is_vblank;
     bool is_nmi;
 
     uint8_t ram[0x2000];
+
+    SDL_Renderer *renderer;
+    SDL_Texture *texture;
 };
 typedef struct ppu_s ppu_t;
 
-ppu_t *ppu_init(void);
+ppu_t *ppu_init(SDL_Renderer *renderer);
 void ppu_free(ppu_t *ppu);
 void ppu_reset(ppu_t *ppu);
 

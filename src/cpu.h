@@ -84,7 +84,7 @@ static const char *OPCODES[256] = {
 /*F0*/  "BEQ", "SBC", "BAD", "ISB", "NOP", "SBC", "INC", "ISB", "SED", "SBC", "NOP", "ISB", "NOP", "SBC", "INC", "ISB",  /*F0*/
 };
 
-cpu_t *cpu_init(void);
+cpu_t *cpu_init(ppu_t *ppu);
 void cpu_free(cpu_t *cpu);
 void cpu_reset(cpu_t *cpu);
 uint8_t cpu_tick(cpu_t *cpu);
